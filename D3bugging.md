@@ -13,16 +13,16 @@
 
 #### Safari
 
-- Safari has lot of the same functionality (They're both WebKit), but presented differently.  
-- Must be turned on manually from Preferences -> Advanced
-- Developer mode UI is more like Xcode, so you have to dig for things (like stopping on uncaught exceptions)
-- Missing some really cool features (like local modifications)
+- Safari has lot of the same developer functionality as Chrome (They're both WebKit), but presented differently.  
+- Developer Mode Must be turned on manually from Preferences -> Advanced
+- The UI is similar to Xcode, so you have to dig for things (like stopping on uncaught exceptions)
+- It is missing some cool features that Chrome has (like local modifications)
 
 #### Firefox
 
-- I don't generally use Firefox.  Firebug
+- I don't generally use Firefox.  Firebug was the dominant debugger tool for years.
 - Most of the same debugging functionality as the WebKit browsers 
-- They also have a 3D inspector that works with SVG.
+- They also have a 3D inspector that works with SVG.  Not specifically javascript related, but cool nonetheless.
 
 ### Editor
 
