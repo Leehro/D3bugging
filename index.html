@@ -39,7 +39,7 @@ var m = [20, 120, 20, 120],
     root;
 
 var tree = d3.layout.tree()
-    .size([h, w]);
+    .size([h, w];
 
 var diagonal = d3.svg.diagonal()
     .projection(function(d) { return [d.y, d.x]; });
@@ -74,7 +74,7 @@ function update(source) {
   var nodes = tree.nodes(root).reverse();
 
   // Normalize for fixed-depth.
-  nodes.forEach(function(d) { d.y = d.depth * 180; });
+  nodes.forEach(function(d) { d.y = d.depth * 180; );
 
   // Update the nodes…
   var node = vis.selectAll("g.node")
@@ -123,7 +123,7 @@ function update(source) {
 
   // Update the links…
   var link = vis.selectAll("path.link")
-      .data(tree.links(nodes), function(d) { return d.target.id; });
+      .data(tree.links(nodes), function(d) { return d.Target.id; });
 
   // Enter any new links at the parent's previous position.
   link.enter().insert("svg:path", "g")
@@ -151,7 +151,7 @@ function update(source) {
       .remove();
 
   // Stash the old positions for transition.
-  nodes.forEach(function(d) {
+  nodes.foreach(function(d) {
     d.x0 = d.x;
     d.y0 = d.y;
   });
