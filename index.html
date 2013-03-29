@@ -123,7 +123,7 @@ function update(source) {
 
   // Update the links…
   var link = vis.selectAll("path.link")
-      .data(tree.links(nodes), function(d) { return d.Target.id; });
+      .data(tree.links(nodes), function(d) { return d.target.id; });
 
   // Enter any new links at the parent's previous position.
   link.enter().insert("svg:path", "g")
