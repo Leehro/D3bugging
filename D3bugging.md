@@ -39,32 +39,35 @@
     - Save, reload, repeat.
 - Gist / bl.ocks.org.  Easy to share/show someone, like these examples
 
+### Other Tools
+
+1. [JSFiddle](http://jsfiddle.net)
+2. [JSLint](http://www.jslint.com), [JSONLint](http://jsonlint.com)
+3. [Postman - REST Client](https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm)
+
 ## D3bugging Exercises
 
-### Simple Debugging
+1. Make it work
+2. Make it right
+3. Make it fast
 
-[Bar Graph View](http://bl.ocks.org/Leehro/raw/5263797/)
+(loosely)
 
-1. Launch Developer Tools, JavaScript Console
-2. Chrome will let you edit javascript IN place if it's in a separate JS file (and not just in a script tag)
-3. These get lost if you reload the page but would work in a function or a handler
+### Make it work
 
-### More complicated Debugging
+- View->Developer Tools->JavaScript Console will show syntax errors and uncaught exceptions
 
-__Need an example__
+### Make it right
 
 ![Breakdance point](http://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Break_dance.svg/256px-Break_dance.svg.png)
 
-1. Set a Breakpoint (Standard, Conditional, Fancy)
-2. Inspecting values (Local, Global, Watch Expressions)
-3. Console to evaluate expressions
+- Manual breakpoints, conditional, and from code
+- Pause on uncaught! (Purple Stop Sign).
+  - Be careful with bad data
+- Inspecting values
+- Call Stack
+- Console logging
 
-### Layouts, external data
+### Make it fast
 
-Link.
-
-1. Pause on uncaught is your friend! (Purple Stop Sign).
-2. Call Stack
-3. Bad data?  Be careful.
-    - Now I've left a , off my json file on line 409.  Chrome reports it as the .html file.
-    - JSON Validator: http://jsonlint.com
+- Profiling
