@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <link type="text/css" rel="stylesheet" href="style.css"/>
@@ -25,10 +25,20 @@
   </head>
   <body>
     <div id="body">
-      <div id="footer">
-        Vertebrates
-        <div class="hint">click or option-click to expand or collapse</div>
+      <div id="header">
+        <div>
+          Vertebrates<br/>
+          <p class="hint">
+            click or option-click to expand or collapse - or - choose from the menu below
+          </p>
+        </div>
+        <div>
+          <select id="node_selector">
+          </select>
+        </div>
       </div>
+      <div id="tree"></div>
+
     </div>
     <script type="text/javascript">
 
@@ -44,7 +54,7 @@ var tree = d3.layout.tree()
 var diagonal = d3.svg.diagonal()
     .projection(function(d) { return [d.y, d.x]; });
 
-var vis = d3.select("#body").append("svg:svg")
+var vis = d3.select("#tree").append("svg:svg")
     .attr("width", w + m[1] + m[3])
     .attr("height", h + m[0] + m[2])
   .append("svg:g")
@@ -54,20 +64,32 @@ d3.json("vertebrates.json", function(json) {
   root = json;
   root.x0 = h / 2;
   root.y0 = 0;
+  var options_list = [];
 
   function toggleAll(d) {
     if (d.children) {
       d.children.forEach(toggleAll);
       toggle(d);
+      options_list.push(d)
     }
   }
 
   // Initialize the display to show a few nodes.
   root.children.forEach(toggleAll);
-  update(root);
+  update();
+
+  options_list.sort(function(a, b) {
+    if(a.name < b.name) return -1;
+    if(a.name > b.name) return 1;
+    return 0;
+  });
+
+  options_list.forEach(function(d) {
+    document.getElementById("node_selector").options.add(new Option(d.name, d.name));
+  });
 });
 
-function update(source) {
+function update() {
   var duration = d3.event && d3.event.altKey ? 5000 : 500;
 
   // Compute the new tree layout.
@@ -83,7 +105,12 @@ function update(source) {
   // Enter any new nodes at the parent's previous position.
   var nodeEnter = node.enter().append("svg:g")
       .attr("class", "node")
-      .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+      .attr("transform", function(d) {
+        if (!d.hasOwnProperty('parent')) {
+          return "translate(" + root.y + "," + root.x + ")";
+        }
+        return "translate(" + d.parent.y0 + "," + d.parent.x0 + ")";
+      })
       .on("click", function(d) { toggle(d); update(d); });
 
   nodeEnter.append("svg:circle")
@@ -112,7 +139,12 @@ function update(source) {
   // Transition exiting nodes to the parent's new position.
   var nodeExit = node.exit().transition()
       .duration(duration)
-      .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+      .attr("transform", function(d) {
+        if (!d.hasOwnProperty('parent')) {
+          return "translate(" + root.y + "," + root.x + ")";
+        }
+        return "translate(" + d.parent.y + "," + d.parent.x + ")";
+      })
       .remove();
 
   nodeExit.select("circle")
@@ -129,7 +161,7 @@ function update(source) {
   link.enter().insert("svg:path", "g")
       .attr("class", "link")
       .attr("d", function(d) {
-        var o = {x: source.x0, y: source.y0};
+        var o = {x: d.source.x0, y: d.source.y0};
         return diagonal({source: o, target: o});
       })
     .transition()
@@ -145,7 +177,7 @@ function update(source) {
   link.exit().transition()
       .duration(duration)
       .attr("d", function(d) {
-        var o = {x: source.x, y: source.y};
+        var o = {x: d.source.x, y: d.source.y};
         return diagonal({source: o, target: o});
       })
       .remove();

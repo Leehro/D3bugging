@@ -1,43 +1,26 @@
 body {
-  overflow: hidden;
   margin: 0;
   font-size: 14px;
   font-family: "Helvetica Neue", Helvetica;
 }
 
-#chart, #header, #footer {
+#tree, #header, #footer {
   position: absolute;
-  top: 0;
 }
 
-#header, #footer {
+#header {
   z-index: 1;
   display: block;
   font-size: 36px;
   font-weight: 300;
   text-shadow: 0 1px 0 #fff;
-}
-
-#header.inverted, #footer.inverted {
-  color: #fff;
-  text-shadow: 0 1px 4px #000;
-}
-
-#header {
-  top: 80px;
-  left: 140px;
-  width: 1000px;
-}
-
-#footer {
-  top: 680px;
+  top: 0px;
   right: 140px;
   text-align: right;
 }
 
-rect {
-  fill: none;
-  pointer-events: all;
+#tree {
+  top: 110px;
 }
 
 pre {
@@ -80,9 +63,16 @@ a:hover {
 }
 
 .hint {
-  position: absolute;
+  margin: 0px;
   right: 0;
-  width: 1280px;
   font-size: 12px;
   color: #999;
+}
+
+select {
+    color: #555555;
+    border: 1px solid #cccccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
 }
