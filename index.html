@@ -85,7 +85,7 @@ d3.json("vertebrates.json", function(json) {
   });
 
   options_list.forEach(function(d) {
-    document.getElementById("node_selector").options.add(new Option(d.name, d.name));
+    document.getElementById("node_selector").options.add(new Option(d.name, d.id));
   });
 });
 
