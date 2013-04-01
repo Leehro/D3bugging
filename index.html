@@ -169,7 +169,12 @@ function update() {
   link.enter().insert("svg:path", "g")
       .attr("class", "link")
       .attr("d", function(d) {
-        var o = {x: d.source.x, y: d.source.y};
+        var o;
+        if (!d.hasOwnProperty('parent')) {
+          o = {x: root.x, y: root.y};
+        } else {
+          o = {x: d.parent.x, y: d.parent.y};
+        }
         return diagonal({source: o, target: o});
       })
     .transition()
@@ -186,8 +191,14 @@ function update() {
       .duration(duration)
       .attr("d", function(d) {
         var o = {x: d.source.x, y: d.source.y};
-        return diagonal({source: o, target: o});
-      })
+          var o;
+          if (!d.hasOwnProperty('parent')) {
+            o = {x: root.x, y: root.y};
+          } else {
+            o = {x: d.parent.x, y: d.parent.y};
+          }
+          return diagonal({source: o, target: o});
+        })
       .remove();
 
   // Stash the old positions for transition.
