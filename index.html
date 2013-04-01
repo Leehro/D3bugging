@@ -227,7 +227,6 @@ function expand_node_path_by_id(node, id) {
     for (var i=0; result==null && i < children.length; i++) {
       result = expand_node_path_by_id(children[i], id);
       if (result && result.name != children[i].name) {
-        console.log(children[i].name)
         toggle(children[i]);
       }
     }
