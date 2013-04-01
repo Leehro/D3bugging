@@ -33,7 +33,7 @@
           </p>
         </div>
         <div>
-          <select id="node_selector">
+          <select id="node_selector" onchange="show_selected_option(this.value)">
           </select>
         </div>
       </div>
@@ -100,18 +100,26 @@ function update() {
 
   // Update the nodes…
   var node = vis.selectAll("g.node")
-      .data(nodes, function(d) { return d.id || (d.id = ++i); });
+      .data(nodes, function(d) {
+        return d.id;
+      });
 
   // Enter any new nodes at the parent's previous position.
   var nodeEnter = node.enter().append("svg:g")
       .attr("class", "node")
+      .attr("id", function(d) {
+        return d.id;
+      })
       .attr("transform", function(d) {
         if (!d.hasOwnProperty('parent')) {
           return "translate(" + root.y + "," + root.x + ")";
         }
         return "translate(" + d.parent.y0 + "," + d.parent.x0 + ")";
       })
-      .on("click", function(d) { toggle(d); update(d); });
+      .on("click", function(d) {
+        toggle(d);
+        update(d);
+      });
 
   nodeEnter.append("svg:circle")
       .attr("r", 1e-6)
@@ -161,7 +169,7 @@ function update() {
   link.enter().insert("svg:path", "g")
       .attr("class", "link")
       .attr("d", function(d) {
-        var o = {x: d.source.x0, y: d.source.y0};
+        var o = {x: d.source.x, y: d.source.y};
         return diagonal({source: o, target: o});
       })
     .transition()
@@ -198,6 +206,49 @@ function toggle(d) {
     d.children = d._children;
     d._children = null;
   }
+}
+
+// Collapse all nodes
+function collapseAll(d) {
+  if (d.children) {
+    d.children.forEach(collapseAll);
+    d._children = d.children;
+    d.children = null;
+  }
+  update();
+}
+
+function expand_node_path_by_id(node, id) {
+  if (node.id == id) {
+    return node;
+  } else {
+    var children = (node.children || node._children);
+    var result = null;
+    for (var i=0; result==null && i < children.length; i++) {
+      result = expand_node_path_by_id(children[i], id);
+      if (result && result.name != children[i].name) {
+        console.log(children[i].name)
+        toggle(children[i]);
+      }
+    }
+    if (result) {
+      return result;
+    }
+    else {
+      return null;
+    }
+  }
+}
+
+function show_selected_option(chosen_id) {
+  collapseAll(root);
+  var node = expand_node_path_by_id(root, chosen_id);
+
+  // The g_node below was an attempt to highlight selected node, but ran out of time.
+  var g_node = vis.selectAll("g.node")[0].filter(function(d) { return d.id==node.id; });
+
+  toggle(root);
+  update();
 }
 
     </script>
