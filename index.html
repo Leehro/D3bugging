@@ -4,24 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <link type="text/css" rel="stylesheet" href="style.css"/>
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <style type="text/css">
-    .node circle {
-      cursor: pointer;
-      fill: #fff;
-      stroke: steelblue;
-      stroke-width: 1.5px;
-    }
-
-    .node text {
-      font-size: 11px;
-    }
-
-    path.link {
-      fill: none;
-      stroke: #ccc;
-      stroke-width: 1.5px;
-    }
-    </style>
   </head>
   <body>
     <div id="body">
@@ -48,6 +30,8 @@ var m = [20, 120, 20, 120],
     i = 0,
     root;
 
+var selected_node;  // id of selected node, starts at root
+
 var tree = d3.layout.tree()
     .size([h, w]);
 
@@ -64,6 +48,7 @@ d3.json("vertebrates.json", function(json) {
   root = json;
   root.x0 = h / 2;
   root.y0 = 0;
+  selected_node = root.id;
   var options_list = [];
 
   function toggleAll(d) {
@@ -118,17 +103,20 @@ function update() {
       })
       .on("click", function(d) {
         toggle(d);
-        update(d);
+        selected_node = d.id;
+        update();
       });
 
   nodeEnter.append("svg:circle")
       .attr("r", 1e-6)
-      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+      .style("fill", function(d) {
+        return d._children ? "lightsteelblue" : "#fff";
+      });
 
   nodeEnter.append("svg:text")
-      .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
+      .attr("x", "-12")
       .attr("dy", ".35em")
-      .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+      .attr("text-anchor", "end")
       .text(function(d) { return d.name; })
       .style("fill-opacity", 1e-6);
 
@@ -138,8 +126,19 @@ function update() {
       .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 
   nodeUpdate.select("circle")
-      .attr("r", 4.5)
-      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+      .attr("r", function(d) {
+        if (d.id == selected_node) {
+          return 9;
+        } else {
+          return 4.5;
+        }
+      })
+      .style("fill", function(d) {
+        if (d.id == selected_node) {
+          return "steelblue";
+        }
+        return d._children ? "lightsteelblue" : "#fff";
+      });
 
   nodeUpdate.select("text")
       .style("fill-opacity", 1);
@@ -242,10 +241,9 @@ function expand_node_path_by_id(node, id) {
 function show_selected_option(chosen_id) {
   collapseAll(root);
   var node = expand_node_path_by_id(root, chosen_id);
+  selected_node = chosen_id;
   toggle(root);
   update();
-  // The g_node below was an attempt to highlight selected node, but ran out of time.
-  var g_node = vis.selectAll("g.node")[0].filter(function(d) { return d.id==node.id; });
 }
 
     </script>
