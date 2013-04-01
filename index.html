@@ -242,12 +242,10 @@ function expand_node_path_by_id(node, id) {
 function show_selected_option(chosen_id) {
   collapseAll(root);
   var node = expand_node_path_by_id(root, chosen_id);
-
-  // The g_node below was an attempt to highlight selected node, but ran out of time.
-  var g_node = vis.selectAll("g.node")[0].filter(function(d) { return d.id==node.id; });
-
   toggle(root);
   update();
+  // The g_node below was an attempt to highlight selected node, but ran out of time.
+  var g_node = vis.selectAll("g.node")[0].filter(function(d) { return d.id==node.id; });
 }
 
     </script>
