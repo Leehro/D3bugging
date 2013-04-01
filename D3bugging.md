@@ -67,6 +67,7 @@
 - Inspecting values
 - Call Stack
 - Console logging
+- Set breakpoint in code using `debugger;`
 
 ### Make it fast
 
